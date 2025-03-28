@@ -60,8 +60,7 @@ def split_comic_variable_grid(
         min_area: 最小面板面积
         max_area: 最大面板面积
     """
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+    os.makedirs(output_folder, exist_ok=True)
 
     # 读取图像
     image = cv2.imread(image_path)
@@ -78,14 +77,15 @@ def split_comic_variable_grid(
         cv2.imwrite(output_path, panel)
 
 
-for chapter in range(1, 46):
-    chapter: str = '0' + str(chapter) if chapter < 10 else str(chapter)
-    for page in range(8, 200):
-        image_path: str = f'./data/images/ch_{chapter}/page_{page}.png'
-        if page > 190 and not os.path.exists(image_path):
-            break
-        split_comic_variable_grid(
-            image_path=image_path,
-            output_folder=f'./data/panels/ch_{chapter}/page_{page}',
-        )
-    print(f'Finish chapter_{chapter}')
+if __name__=="__main__":
+    for chapter in range(1, 46):
+        chapter: str = '0' + str(chapter) if chapter < 10 else str(chapter)
+        for page in range(8, 200):
+            image_path: str = f'./data/images/ch_{chapter}/page_{page}.png'
+            if page > 190 and not os.path.exists(image_path):
+                break
+            split_comic_variable_grid(
+                image_path=image_path,
+                output_folder=f'./data/panels/ch_{chapter}/page_{page}',
+            )
+        print(f'Finish chapter_{chapter}')
